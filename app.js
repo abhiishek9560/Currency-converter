@@ -1,4 +1,4 @@
-const baseURL = "https://raw.githubusercontent.com/WoXy-Sensei/currency-api/main/api";
+const baseURL = "https://raw.githubusercontent.com/WoXy-Sensei/currency-api/main/api"; // this API doesn't give exchange rate of many countries
 const baseURL2 = "https://2024-03-06.currency-api.pages.dev/v1/currencies";
 const dropdowns = document.querySelectorAll("select");
 const btn = document.querySelector("button");
@@ -71,8 +71,8 @@ btn.addEventListener("click", async (event)=>{
     }
     console.log(amountValue);
 
-    let URL = `${baseURL}/${fromCon.value}_${toCon.value}.json`;
-    // let URL = `${baseURL}/${fromCon.value}json`;
+    //let URL = `${baseURL}/${fromCon.value}_${toCon.value}.json`;
+    let URL = `${baseURL2}/${fromCon.value.toLowerCase()}.json`;
     console.log(fromCon.value, toCon.value);
     let x = fromCon.value;
     let y = toCon.value;
@@ -91,14 +91,15 @@ btn.addEventListener("click", async (event)=>{
 
     }else{
         let data = await response.json();
-        // let FROM = fromCon.value.toLowerCase();
-        // let TO = toCon.value.toLowerCase();
-        // console.log(FROM);
-        // console.log(TO);
-        // console.log(data.fromCon.value.toLowerCase());
-        console.log(data.rate);
-        msgBox.textContent = `${amountValue} ${fromCon.value} = ${(1/data.rate)*(amountValue)} ${toCon.value}`;
-        localStorage.setItem("message", msgBox.innerText);
+       // console.log(data.inr["usd"]);
+        for(const currCode in data[`${fromCon.value.toLowerCase()}`]){
+            if(currCode === toCon.value.toLowerCase()){
+                console.log(data[`${fromCon.value.toLowerCase()}`][currCode]);
+                const exchangeRate = data[`${fromCon.value.toLowerCase()}`][currCode];
+                msgBox.textContent = `${amountValue} ${fromCon.value} = ${(exchangeRate)*(amountValue)} ${toCon.value}`;
+                localStorage.setItem("message", msgBox.innerText);
+            }
+        }
     }
 } );
 
