@@ -98,6 +98,13 @@ btn.addEventListener("click", async (event)=>{
                 const exchangeRate = data[`${fromCon.value.toLowerCase()}`][currCode];
                 msgBox.textContent = `${amountValue} ${fromCon.value} = ${(exchangeRate)*(amountValue)} ${toCon.value}`;
                 localStorage.setItem("message", msgBox.innerText);
+                let text = msgBox.innerText;
+                if(text.length > 35){
+                    msgBox.style.fontSize = "1rem";
+                }
+                else{
+                    msgBox.style.fontSize = "1.2rem";
+                }
             }
         }
     }
